@@ -11,7 +11,7 @@ import { useState } from "react";
 
 export const Directory = () => {
   const [directories, setDirectories] = useState<ParentDirectoryType>({
-    name: "101_keyword",
+    name: "101Keyword",
     children: [],
   });
   const handleAddTest = (
@@ -50,7 +50,7 @@ export const Directory = () => {
           </div>
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel defaultSize={50} className="min-w-[240px]">
+        <ResizablePanel defaultSize={50} className="min-w-[220px]">
           <div className="m-4">
             <DirectoryCard
               handleAddTest={handleAddTest}
