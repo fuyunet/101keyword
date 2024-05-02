@@ -1,14 +1,11 @@
-export type ParentDirectoryType = {
-  name: string;
-  children: Array<FolderType>;
-};
-
-export type FolderType = {
-  name: string;
-  type: "folder" | "file";
-  children: Array<FileType>;
-};
-
-export type FileType = {
-  name: string;
+export type DirectoryStructureType = {
+  nextId: number;
+  dir: {
+    [key: number]: {
+      id: number;
+      name: string;
+      type: "folder" | "file";
+      childIds: Array<number>;
+    };
+  };
 };

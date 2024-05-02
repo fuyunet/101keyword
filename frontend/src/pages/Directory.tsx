@@ -6,35 +6,43 @@ import {
 import { DirectoryCard } from "@/features/Directory/components/DirectoryCard";
 import { DirectoryMenu } from "@/features/Directory/components/DirectoryMenu";
 import { DirectoryTree } from "@/features/Directory/components/DirectoryTree";
-import { ParentDirectoryType } from "@/features/Directory/types/DirectoryType";
+import { DirectoryStructureType } from "@/features/Directory/types/DirectoryType";
 import { useState } from "react";
 
 export const Directory = () => {
-  const [directories, setDirectories] = useState<ParentDirectoryType>({
-    name: "101Keyword",
-    children: [],
+  const [directories, setDirectories] = useState<DirectoryStructureType>({
+    nextId: 1,
+    dir: {
+      0: {
+        id: 0,
+        name: "101Keyword",
+        type: "folder",
+        childIds: [],
+      },
+    },
   });
-  const handleAddTest = (
+  const handleAdd = (
     name: string,
     type: "file" | "folder",
-    path: string
+    parentId: number
   ) => {
-    if (type === "folder") {
-      setDirectories((prev) => {
-        prev.children.push({
+    const newId = directories.nextId;
+    setDirectories((prev) => ({
+      nextId: prev.nextId + 1,
+      dir: {
+        ...prev.dir,
+        [parentId]: {
+          ...prev.dir[parentId],
+          childIds: [...prev.dir[parentId].childIds, newId],
+        },
+        [newId]: {
+          id: newId,
           name: name,
-          type: "folder",
-          children: [],
-        });
-        return { name: prev.name, children: [...prev.children] };
-      });
-    } else {
-      setDirectories((prev) => {
-        const destination = prev.children.find((child) => child.name === path);
-        if (destination) destination.children.push({ name: name });
-        return { name: prev.name, children: [...prev.children] };
-      });
-    }
+          type: type,
+          childIds: [],
+        },
+      },
+    }));
   };
 
   return (
@@ -46,16 +54,17 @@ export const Directory = () => {
       >
         <ResizablePanel defaultSize={50} className="min-w-[75px]">
           <div className="ml-2">
-            <DirectoryTree directories={directories} />
+            <DirectoryTree
+              directories={directories}
+              currentId={0}
+              parentId={0}
+            />
           </div>
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={50} className="min-w-[220px]">
           <div className="m-4">
-            <DirectoryCard
-              handleAddTest={handleAddTest}
-              directories={directories}
-            />
+            <DirectoryCard handleAdd={handleAdd} directories={directories} />
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>

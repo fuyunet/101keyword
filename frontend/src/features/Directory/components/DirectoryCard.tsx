@@ -16,31 +16,30 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import { ParentDirectoryType } from "../types/DirectoryType";
-import { flattenDirectories } from "../helpers/flattenDirectories";
+import { DirectoryStructureType } from "../types/DirectoryType";
 
 type DirectoryCardProps = {
-  handleAddTest: (name: string, type: "file" | "folder", path: string) => void;
-  directories: ParentDirectoryType;
+  handleAdd: (name: string, type: "file" | "folder", parentId: number) => void;
+  directories: DirectoryStructureType;
 };
 
 export const DirectoryCard = ({
-  handleAddTest,
-  directories,
-}: DirectoryCardProps) => {
+  handleAdd,
+}: // directories,
+DirectoryCardProps) => {
   const [name, setName] = useState("");
-  const [path, setPath] = useState("");
+  const [parentId, setParentId] = useState(0);
   const [type, setType] = useState<"file" | "folder">("folder");
 
-  const availableFolders = flattenDirectories(directories);
+  // const availableFolders = flattenDirectories(directories);
 
   const onSubmit = () => {
-    handleAddTest(name, type, path);
+    handleAdd(name, type, parentId);
     setName("");
   };
   const onReset = () => {
     setName("");
-    setPath("");
+    setParentId(0);
     setType("folder");
   };
 
@@ -65,7 +64,6 @@ export const DirectoryCard = ({
                 <Select
                   onValueChange={(value: "file" | "folder") => {
                     setType(value);
-                    setPath("");
                   }}
                   value={type}
                 >
@@ -79,12 +77,18 @@ export const DirectoryCard = ({
                 </Select>
               </div>
             </div>
-            {type === "file" && (
-              <div>
-                <Label htmlFor="type" className="ml-2">
-                  Path
-                </Label>
-                <Select onValueChange={(value) => setPath(value)}>
+
+            <div>
+              <Label htmlFor="type" className="ml-2">
+                Path
+              </Label>
+              <Input
+                id="path"
+                type="number"
+                value={parentId}
+                onChange={(e) => setParentId(Number(e.currentTarget.value))}
+              />
+              {/* <Select onValueChange={(value) => setPath(value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select destination" />
                   </SelectTrigger>
@@ -95,9 +99,9 @@ export const DirectoryCard = ({
                       </SelectItem>
                     ))}
                   </SelectContent>
-                </Select>
-              </div>
-            )}
+                </Select> */}
+            </div>
+
             <div>
               <Label htmlFor="name" className="ml-2">
                 Name
@@ -112,6 +116,7 @@ export const DirectoryCard = ({
           </div>
         </form>
       </CardContent>
+
       <CardFooter className="flex justify-center space-x-4">
         <Button variant="outline" onClick={onReset}>
           reset
