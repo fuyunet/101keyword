@@ -45,6 +45,18 @@ export const Directory = () => {
     }));
   };
 
+  const handleRemove = (parentId: number, childId: number) => {
+    const parent = directories.dir[parentId];
+    const nextParent = {
+      ...parent,
+      childIds: parent.childIds.filter((id) => id !== childId),
+    };
+    setDirectories((prev) => ({
+      nextId: prev.nextId,
+      dir: { ...prev.dir, [parentId]: nextParent },
+    }));
+  };
+
   return (
     <>
       <DirectoryMenu />
@@ -56,6 +68,7 @@ export const Directory = () => {
           <div className="ml-2">
             <DirectoryTree
               directories={directories}
+              handleRemove={handleRemove}
               currentId={0}
               parentId={0}
             />

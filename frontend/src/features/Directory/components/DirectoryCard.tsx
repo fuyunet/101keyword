@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { DirectoryStructureType } from "../types/DirectoryType";
+import { DirectoryCardPath } from "./DirectoryCardPath";
 
 type DirectoryCardProps = {
   handleAdd: (name: string, type: "file" | "folder", parentId: number) => void;
@@ -25,9 +26,10 @@ type DirectoryCardProps = {
 
 export const DirectoryCard = ({
   handleAdd,
-}: // directories,
-DirectoryCardProps) => {
+  directories,
+}: DirectoryCardProps) => {
   const [name, setName] = useState("");
+  const [path, setPath] = useState("");
   const [parentId, setParentId] = useState(0);
   const [type, setType] = useState<"file" | "folder">("folder");
 
@@ -37,8 +39,10 @@ DirectoryCardProps) => {
     handleAdd(name, type, parentId);
     setName("");
   };
+
   const onReset = () => {
     setName("");
+    setPath("");
     setParentId(0);
     setType("folder");
   };
@@ -59,6 +63,19 @@ DirectoryCardProps) => {
             <div className="flex flex-col space-y-2.5">
               <div>
                 <Label htmlFor="type" className="ml-2">
+                  Path
+                </Label>
+                <DirectoryCardPath
+                  path={path}
+                  parentId={parentId}
+                  setPath={setPath}
+                  setParentId={setParentId}
+                  directories={directories}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="type" className="ml-2">
                   Type
                 </Label>
                 <Select
@@ -76,30 +93,6 @@ DirectoryCardProps) => {
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-
-            <div>
-              <Label htmlFor="type" className="ml-2">
-                Path
-              </Label>
-              <Input
-                id="path"
-                type="number"
-                value={parentId}
-                onChange={(e) => setParentId(Number(e.currentTarget.value))}
-              />
-              {/* <Select onValueChange={(value) => setPath(value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select destination" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableFolders?.map((folder, index) => (
-                      <SelectItem key={index} value={folder}>
-                        {folder}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select> */}
             </div>
 
             <div>
