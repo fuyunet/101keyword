@@ -101,7 +101,7 @@ export const DirectoryCard = ({
               </Label>
               <Input
                 id="name"
-                placeholder="Directory or file name"
+                placeholder="Folder or file name"
                 value={name}
                 onChange={(data) => setName(data.currentTarget.value)}
               />

@@ -28,7 +28,7 @@ export const DirectoryTreeChild = ({
       <div
         key={i.toString() + depth.toString()}
         style={{
-          marginLeft: i > 0 ? (drawLineLeft[i] ? "2.1em" : "2.4rem") : "1px",
+          marginLeft: i > 0 ? (drawLineLeft[i] ? "2.1rem" : "2.4rem") : "1px",
         }}
       >
         {drawLineLeft[i] ? "│" : ""}
